@@ -7,15 +7,20 @@
     "invoke": "serverless invoke local --function $FUNC --data",
     "invoke:getProductsList": "serverless invoke local --function getProductsList",
     "invoke:getProduct": "serverless invoke local --function getProduct --data",
-    "invoke:getProduct-parametrized": "serverless invoke local --function getProduct -p ./test/get-product-params.json"
+    "invoke:getProduct-parametrized": "serverless invoke local --function getProduct -p ./test/get-product-params.json",
+    "invoke:postProduct-parametrized": "serverless invoke local --function postProduct -p ./test/post-product-params.json",
+    "seed": "npx ts-node repository/seed.ts"
   },
   "dependencies": {
     "@types/jest": "^26.0.15",
+    "dotenv": "^8.2.0",
+    "pg": "^8.4.2",
     "source-map-support": "^0.5.10"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",
     "@types/node": "^10.12.18",
+    "@types/pg": "^7.14.5",
     "@types/serverless": "^1.72.5",
     "fork-ts-checker-webpack-plugin": "^3.0.1",
     "serverless-webpack": "^5.2.0",

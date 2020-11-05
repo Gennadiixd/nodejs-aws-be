@@ -11,11 +11,11 @@ import { Response, IProductResponse } from "./response";
 export const getProduct: APIGatewayProxyHandler = async (
   event
 ): Promise<IProductResponse> => {
+  console.log("Incoming request.", event.pathParameters);
   let resp: IProductResponse;
 
   const productsRepository: IProductsRepository = new ProductsRepository();
-  const id = event?.pathParameters?.productId;
-  const productId = Number.parseInt(id);
+  const productId = event?.pathParameters?.productId;
 
   if (!productId) {
     resp = new Response({

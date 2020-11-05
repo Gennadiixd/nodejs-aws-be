@@ -1,0 +1,9 @@
+{
+  "body": {
+    "title": "test_title",
+    "description": "test_description",
+    "price": 42,
+    "image": "src",
+    "count": 24
+  }
+}
