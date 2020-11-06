@@ -1,15 +1,10 @@
 export interface IQueryBuilder {
   getCreateTableStocksQuery: () => string;
   getCreateTableProductsQuery: () => string;
-  getCreateProductQuery: (
-    title: string,
-    description: string,
-    price: number,
-    image: string
-  ) => string;
-  getCreateStockQuery: (product_id: string, count: number) => string;
+  getCreateProductQuery: () => string;
+  getCreateStockQuery: () => string;
   getProductsListQuery: () => string;
-  getProductQuery: (id: string) => string;
+  getProductQuery: () => string;
 }
 
 export class QueryBuilder implements IQueryBuilder {
@@ -31,20 +26,15 @@ export class QueryBuilder implements IQueryBuilder {
     )
   `;
 
-  getCreateProductQuery = (
-    title: string,
-    description: string,
-    price: number,
-    image: string
-  ) => `
+  getCreateProductQuery = () => `
     insert into products (title, description, price, image) 
-    values ('${title}', '${description}', '${price}', '${image}')
+    values ($1, $2, $3, $4)
     RETURNING *
   `;
 
-  getCreateStockQuery = (product_id: string, count: number) => `
+  getCreateStockQuery = () => `
     insert into stocks (product_id, count) 
-    values ('${product_id}', '${count}')
+    values ($1, $2)
     RETURNING *
   `;
 
@@ -54,10 +44,10 @@ export class QueryBuilder implements IQueryBuilder {
     ON P.id = S.product_id
   `;
 
-  getProductQuery = (id: string) => `
+  getProductQuery = () => `
     SELECT *
     FROM products P
     INNER JOIN stocks S
-    ON P.id = S.product_id AND p.id = '${id}'
+    ON P.id = S.product_id AND p.id = $1
   `;
 }

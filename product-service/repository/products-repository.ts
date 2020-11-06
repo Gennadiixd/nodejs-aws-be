@@ -55,16 +55,16 @@ export class ProductsRepository implements IProductsRepository {
 
     try {
       await this.client.query("BEGIN");
-      const createProductQuery = this.queryBuilder.getCreateProductQuery(
-        title,
-        description,
-        price,
-        image
-      );
+      const createProductQuery = this.queryBuilder.getCreateProductQuery();
 
       const {
         rows: [createdProduct],
-      } = await this.client.query(createProductQuery);
+      } = await this.client.query(createProductQuery, [
+        title,
+        description,
+        price,
+        image,
+      ]);
       const { id } = createdProduct;
 
       await this.createStock(id, count);
@@ -85,13 +85,10 @@ export class ProductsRepository implements IProductsRepository {
     await this.connect();
 
     try {
-      const createStockQuery = this.queryBuilder.getCreateStockQuery(
-        product_id,
-        count
-      );
+      const createStockQuery = this.queryBuilder.getCreateStockQuery();
       const {
         rows: [createdStock],
-      } = await this.client.query(createStockQuery);
+      } = await this.client.query(createStockQuery, [product_id, count]);
 
       return createdStock;
     } catch (error) {
@@ -121,10 +118,10 @@ export class ProductsRepository implements IProductsRepository {
     await this.connect();
 
     try {
-      const productQuery = this.queryBuilder.getProductQuery(productId);
+      const productQuery = this.queryBuilder.getProductQuery();
       const {
         rows: [product],
-      } = await this.client.query(productQuery);
+      } = await this.client.query(productQuery, [productId]);
 
       return product;
     } catch (error) {
