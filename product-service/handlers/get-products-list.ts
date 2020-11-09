@@ -11,6 +11,7 @@ import { Response, IProductResponse } from "./response";
 export const getProductsList: APIGatewayProxyHandler = async (): Promise<
   IProductResponse
 > => {
+  console.log("Incoming request.");
   let resp: IProductResponse;
 
   const productsRepository: IProductsRepository = new ProductsRepository();

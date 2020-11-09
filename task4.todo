@@ -1,0 +1,12 @@
+task-4:
+  ✔ Write SQL script to fill tables with test examples (products + stocks) @done(20-11-05 03:16)
+  ✔ GET/products lambda to return list joined stocks and products tables @done(20-11-05 03:16)
+  ✔ Integrate GET/products/{productId} lambda to return a product from the database @done(20-11-05 03:16)
+  ✔ Implement POST/products lambda and implement its logic so it will be creating a new item in a products table. @done(20-11-05 17:05)
+
+Additional: 
+  ✔ Sql script for product load (products+stocks creation in DB) is committed into GIT @done(20-11-05 17:05)
+  ✔ POST/products lambda functions returns error 400 status code if product data is invalid @done(20-11-05 17:51)
+  ✔ All lambdas return error 500 status code on any error (DB connection, any unhandled error in code) @done(20-11-05 18:01)
+  ✔ All lambdas do console.log for each incoming requests and their arguments @done(20-11-05 17:53)
+  ✔ Transaction based creation of product (in case stock creation is failed then related to this stock product is not created and not ready to be used by the end user and vice versa) (https://devcenter.kinvey.com/nodejs/tutorials/bl-transactional-support) @done(20-11-06 00:49)
