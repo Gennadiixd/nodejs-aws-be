@@ -8,19 +8,36 @@ export const importFileParser = (event) => {
   const { Records } = event;
 
   Records.forEach((record) => {
+    const currentObjectKey = record.s3.object.key;
+
     s3.getObject({
       Bucket: BUCKET_NAME,
-      Key: record.s3.object.key,
+      Key: currentObjectKey,
     })
       .createReadStream()
       .pipe(csv())
       .on("data", (data) => {
         console.log(data);
       })
-      .on("error", (data) => {
-        console.log(data);
+      .on("error", (error) => {
+        console.log(error);
       })
-      .on("end", () => {
+      .on("end", async () => {
+        await s3
+          .copyObject({
+            Bucket: BUCKET_NAME,
+            CopySource: BUCKET_NAME + "/" + currentObjectKey,
+            Key: currentObjectKey.replace("uploaded", "parsed"),
+          })
+          .promise();
+
+        await s3
+          .deleteObject({
+            Bucket: BUCKET_NAME,
+            Key: currentObjectKey,
+          })
+          .promise();
+
         console.log("IN onEnd callback");
       });
   });
