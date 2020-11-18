@@ -2,7 +2,7 @@ import "source-map-support/register";
 import S3 from "aws-sdk/clients/s3";
 import { Response } from "./response";
 
-export const importProductsFile = async (event) => {
+export const importProductsFile = (event) => {
   const BUCKET_NAME = "app-78523-public";
   const s3 = new S3({ region: "eu-west-1", signatureVersion: "v4" });
   let resp;
