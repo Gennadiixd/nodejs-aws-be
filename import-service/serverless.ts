@@ -37,6 +37,19 @@ const serverlessConfiguration: Serverless = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
+      SQS_URL: {
+        Ref: "SQSQueue",
+      },
+    },
+  },
+  resources: {
+    Resources: {
+      SQSQueue: {
+        Type: "AWS::SQS::Queue",
+        Properties: {
+          QueueName: "SQSQueue-Name",
+        },
+      },
     },
   },
   functions: {
@@ -64,6 +77,20 @@ const serverlessConfiguration: Serverless = {
             event: "s3:ObjectCreated:*",
             rules: [{ prefix: "uploaded/", suffix: "csv" }],
             existing: true,
+          },
+        },
+      ],
+    },
+    catalogBatchProcess: {
+      handler: "handler.catalogBatchProcess",
+      events: [
+        {
+          sqs: {
+            batchSize: 5,
+            // just one of method to reference on arn of SQS
+            arn: {
+              "Fn::GetAtt": ["SQSQueue", "Arn"],
+            },
           },
         },
       ],
