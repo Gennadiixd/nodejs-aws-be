@@ -1,0 +1,6 @@
+task-6:
+  ☐ 6.1 Create a lambda function called catalogBatchProcess
+  ☐ 6.2 SQS (catalogItemsQueue) to trigger lambda catalogBatchProcess,
+  with 5 messages at once via batchSize property.The lambda function should iterate over 
+  all SQS messages and create corresponding products in the products table.
+  ☐ 6.3 Create an SNS topic createProductTopic, send an email once it creates products
