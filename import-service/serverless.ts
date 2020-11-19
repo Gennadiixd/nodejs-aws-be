@@ -31,6 +31,24 @@ const serverlessConfiguration: Serverless = {
         Action: "s3:*",
         Resource: ["arn:aws:s3:::app-78523-public/*"],
       },
+      {
+        Effect: "Allow",
+        Action: "sqs:*",
+        Resource: [
+          {
+            "Fn::GetAtt": ["SQSQueue", "Arn"],
+          },
+        ],
+      },
+      {
+        Effect: "Allow",
+        Action: "sns:*",
+        Resource: [
+          {
+            Ref: "SNSTopic",
+          },
+        ],
+      },
     ],
     apiGateway: {
       minimumCompressionSize: 1024,
@@ -40,6 +58,9 @@ const serverlessConfiguration: Serverless = {
       SQS_URL: {
         Ref: "SQSQueue",
       },
+      SNS_ARN: {
+        Ref: "SNSTopic",
+      },
     },
   },
   resources: {
@@ -47,7 +68,23 @@ const serverlessConfiguration: Serverless = {
       SQSQueue: {
         Type: "AWS::SQS::Queue",
         Properties: {
-          QueueName: "SQSQueue-Name",
+          QueueName: "catalogItemsQueue",
+        },
+      },
+      SNSTopic: {
+        Type: "AWS::SNS::Topic",
+        Properties: {
+          TopicName: "createProductTopic",
+        },
+      },
+      SNSSubscription: {
+        Type: "AWS::SNS::Subscription",
+        Properties: {
+          Endpoint: "gennadiixd@gmail.com",
+          Protocol: "email",
+          TopicArn: {
+            Ref: "SNSTopic",
+          },
         },
       },
     },
@@ -87,7 +124,7 @@ const serverlessConfiguration: Serverless = {
         {
           sqs: {
             batchSize: 5,
-            // just one of method to reference on arn of SQS
+            // just one of method to get arn of SQS
             arn: {
               "Fn::GetAtt": ["SQSQueue", "Arn"],
             },

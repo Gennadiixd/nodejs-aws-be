@@ -24,9 +24,13 @@ export const importFileParser = (event, _, callback) => {
         sqs.sendMessage(
           {
             QueueUrl: process.env.SQS_URL,
-            MessageBody: data,
+            MessageBody: JSON.stringify(data),
           },
-          () => console.log("Send ", data)
+          (err, data) => {
+            if (err) {
+              console.log("sendMessageError: ", JSON.stringify(err));
+            }
+          }
         );
       })
       .on("error", (error) => {
